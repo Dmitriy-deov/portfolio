@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Clock, FlaskConical, FileText, ArrowDown, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useProjects } from '../data/useProjectData';
 import { useLanguage } from '../i18n/LanguageContext';
 import type { Project } from '../types/portfolio';
@@ -75,7 +76,7 @@ function ExpandedDetails({ project, t }: { project: Project; t: (key: Translatio
       {/* Time savings */}
       {project.timeSavings && (
         <div className="flex items-center gap-2 text-xs font-bold uppercase text-accent">
-          <span className="material-symbols-outlined text-sm">schedule</span>
+          <Clock size={14} />
           <span>{project.timeSavings}</span>
         </div>
       )}
@@ -96,13 +97,13 @@ function ExpandedDetails({ project, t }: { project: Project; t: (key: Translatio
       <div className="flex flex-wrap gap-4 text-xs text-text-muted">
         {project.tests && (
           <span className="inline-flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-sm">science</span>
+            <FlaskConical size={14} />
             {project.tests}
           </span>
         )}
         {project.docs && (
           <span className="inline-flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-sm">description</span>
+            <FileText size={14} />
             {t('card.docs')} {t(`docs.${project.docs}` as TranslationKey)}
           </span>
         )}
@@ -174,9 +175,7 @@ function ExpandedDetails({ project, t }: { project: Project; t: (key: Translatio
             {project.architecture.map((row, rowIdx) => (
               <React.Fragment key={rowIdx}>
                 {rowIdx > 0 && (
-                  <span className="material-symbols-outlined text-base text-text-muted/50">
-                    arrow_downward
-                  </span>
+                  <ArrowDown size={16} className="text-text-muted/50" />
                 )}
                 <div className="flex flex-wrap justify-center gap-1.5">
                   {row.map((node, nodeIdx) => (
@@ -203,7 +202,7 @@ function ExpandedDetails({ project, t }: { project: Project; t: (key: Translatio
           <ul className="space-y-1.5 text-xs text-text-secondary">
             {project.plans.map((plan, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="material-symbols-outlined mt-0.5 text-sm text-accent">arrow_outward</span>
+                <ArrowUpRight size={14} className="mt-0.5 text-accent" />
                 <span>{plan}</span>
               </li>
             ))}
@@ -382,7 +381,7 @@ export default function SummaryTable() {
                     className="inline-flex shrink-0 text-text-muted transition-transform duration-200"
                     style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
                   >
-                    <span className="material-symbols-outlined text-lg">expand_more</span>
+                    <ChevronDown size={18} />
                   </span>
                   <span className="text-sm font-bold text-text-primary transition-colors group-hover:text-accent">
                     {p.name}
@@ -465,7 +464,7 @@ export default function SummaryTable() {
                     className="mt-1 inline-flex shrink-0 text-text-muted transition-transform duration-200"
                     style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
                   >
-                    <span className="material-symbols-outlined text-sm">expand_more</span>
+                    <ChevronDown size={14} />
                   </span>
                 </div>
 

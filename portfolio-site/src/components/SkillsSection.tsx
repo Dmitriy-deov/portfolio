@@ -1,18 +1,20 @@
+import type { LucideIcon } from 'lucide-react';
+import { TrendingUp, Bot, Code, Search } from 'lucide-react';
 import { useSkills } from '../data/useProjectData';
 import { useLanguage } from '../i18n/LanguageContext';
 
-const iconMapEn: Record<string, string> = {
-  'Product Management': 'trending_up',
-  'AI/LLM Engineering': 'smart_toy',
-  'Full-Stack Development': 'code',
-  'SEO & Content': 'search',
+const iconMapEn: Record<string, LucideIcon> = {
+  'Product Management': TrendingUp,
+  'AI/LLM Engineering': Bot,
+  'Full-Stack Development': Code,
+  'SEO & Content': Search,
 };
 
-const iconMapRu: Record<string, string> = {
-  'Продуктовое управление': 'trending_up',
-  'AI/LLM-инженерия': 'smart_toy',
-  'Full-Stack разработка': 'code',
-  'SEO и контент': 'search',
+const iconMapRu: Record<string, LucideIcon> = {
+  'Продуктовое управление': TrendingUp,
+  'AI/LLM-инженерия': Bot,
+  'Full-Stack разработка': Code,
+  'SEO и контент': Search,
 };
 
 export default function SkillsSection() {
@@ -39,7 +41,7 @@ export default function SkillsSection() {
         {/* Skill cards — right columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3">
           {skills.map((skill, idx) => {
-            const icon = iconMap[skill.category] ?? 'code';
+            const Icon = iconMap[skill.category] ?? Code;
             const description = skill.items.slice(0, 2).join('. ');
 
             return (
@@ -54,9 +56,7 @@ export default function SkillsSection() {
                   idx >= 2 ? 'sm:border-t sm:border-border lg:border-t-0' : '',
                 ].join(' ')}
               >
-                <span className="material-symbols-outlined mb-4 block text-4xl text-accent">
-                  {icon}
-                </span>
+                <Icon size={36} className="mb-4 block text-accent" />
                 <h3 className="mb-2 text-lg font-bold uppercase text-text-primary">
                   {skill.category}
                 </h3>

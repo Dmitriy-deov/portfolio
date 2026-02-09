@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const socialLinks = [
@@ -23,9 +24,7 @@ export default function Footer() {
         <span className="text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
           {t('cta.title')}
         </span>
-        <span className="material-symbols-outlined text-4xl text-white transition-transform group-hover:rotate-45">
-          arrow_outward
-        </span>
+        <ArrowUpRight size={36} className="text-white transition-transform group-hover:rotate-45" />
       </a>
 
       {/* Footer */}
@@ -80,9 +79,7 @@ export default function Footer() {
                     className="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
                   >
                     {link.label}
-                    <span className="material-symbols-outlined text-[14px]">
-                      arrow_outward
-                    </span>
+                    <ArrowUpRight size={14} />
                   </a>
                 </li>
               ))}

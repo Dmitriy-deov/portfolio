@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ArrowRight, X, Menu } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
@@ -85,7 +86,7 @@ export default function Navigation() {
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white text-xs font-black uppercase tracking-widest hover:bg-accent/90 transition-colors"
           >
             {t('nav.cta')}
-            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            <ArrowRight size={14} />
           </a>
         </div>
       </div>
@@ -109,9 +110,7 @@ export default function Navigation() {
             className="flex items-center justify-center w-8 h-8 text-text-primary hover:text-accent transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
-            <span className="material-symbols-outlined text-2xl">
-              {mobileOpen ? 'close' : 'menu'}
-            </span>
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
@@ -140,7 +139,7 @@ export default function Navigation() {
               className="px-4 py-4 text-sm font-black uppercase tracking-widest text-accent flex items-center gap-2"
             >
               {t('nav.cta')}
-              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              <ArrowRight size={14} />
             </a>
           </div>
         </div>

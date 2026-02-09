@@ -93,7 +93,3 @@ body {
   background: var(--color-text-primary);
 }
 
-/* Material Symbols sizing */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}

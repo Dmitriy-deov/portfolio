@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
+import { ArrowDown, Download } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import type { TranslationKey } from '../i18n/translations';
-import CVDownloadModal from './CVDownloadModal';
+
+const CVDownloadModal = lazy(() => import('./CVDownloadModal'));
 
 /* ── Stat box ──────────────────────────────────────────────── */
 
@@ -60,18 +62,22 @@ export default function Hero() {
               className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-accent-hover"
             >
               {t('hero.cta')}
-              <span className="material-symbols-outlined text-base">arrow_downward</span>
+              <ArrowDown size={16} />
             </a>
             <button
               onClick={() => setShowCV(true)}
               className="inline-flex items-center gap-2 rounded-lg border-2 border-accent px-6 py-3 text-sm font-bold uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-white"
             >
               {t('hero.downloadCV')}
-              <span className="material-symbols-outlined text-base">download</span>
+              <Download size={16} />
             </button>
           </div>
 
-          <CVDownloadModal isOpen={showCV} onClose={() => setShowCV(false)} />
+          {showCV && (
+            <Suspense fallback={null}>
+              <CVDownloadModal isOpen={showCV} onClose={() => setShowCV(false)} />
+            </Suspense>
+          )}
         </div>
 
         {/* Right: Stat boxes — col 9-12, 2×2 grid */}

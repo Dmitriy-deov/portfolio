@@ -2,324 +2,435 @@ import type { Project } from '../types/portfolio';
 
 const W = 794;
 const H = 1123;
-const P = 48;
+const P = 40;
 const ACCENT = '#0055FF';
 const FONT = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
 
 function makePage(): HTMLDivElement {
   const div = document.createElement('div');
-  div.style.cssText = `width:${W}px;height:${H}px;background:#fff;font-family:${FONT};color:#111;box-sizing:border-box;padding:${P}px;overflow:hidden;`;
+  div.style.cssText = `width:${W}px;height:${H}px;background:#fff;font-family:${FONT};color:#1a1a1a;box-sizing:border-box;padding:${P}px;overflow:hidden;position:relative;`;
   return div;
 }
 
-function heading(text: string): string {
-  return `<div style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">${text}</div>`;
+/*
+ * SECURITY NOTE: All HTML content below is developer-controlled static text
+ * sourced from hardcoded strings and typed Project data. No user-generated
+ * input enters innerHTML. This is safe from XSS by design.
+ */
+
+/* ── Shared helpers ── */
+
+function accentBar(): string {
+  return `<div style="width:40px;height:3px;background:${ACCENT};margin-bottom:20px;"></div>`;
 }
 
-function divider(mb = 20): string {
-  return `<div style="height:1px;background:#e5e7eb;margin-bottom:${mb}px;"></div>`;
+function sectionTitle(text: string): string {
+  return `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:#888;margin-bottom:6px;">${text}</div>`;
 }
 
-function skillBlock(title: string, items: string[]): string {
-  return `<div>
-    <div style="font-size:11px;font-weight:700;color:${ACCENT};margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">${title}</div>
-    <div style="font-size:10px;line-height:1.8;color:#444;">${items.map(i => `&bull; ${i}`).join('<br>')}</div>
+function sectionHeading(text: string): string {
+  return `<div style="font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-0.3px;color:#111;margin-bottom:16px;">${text}</div>`;
+}
+
+function thinDivider(mb = 16): string {
+  return `<div style="height:1px;background:#eee;margin-bottom:${mb}px;"></div>`;
+}
+
+function pageFooter(name: string, page: number): string {
+  return `<div style="position:absolute;bottom:${P}px;left:${P}px;right:${P}px;display:flex;justify-content:space-between;font-size:8px;color:#bbb;text-transform:uppercase;letter-spacing:1px;">
+    <span>\u00A9 2026 ${name}</span>
+    <span>${page}/3</span>
   </div>`;
 }
 
+/* ── Texts ── */
+
 interface CVTexts {
+  name: string;
+  role: string;
+  location: string;
+  telegram: string;
+  portfolio: string;
   summary: string;
   statLabels: [string, string, string, string];
   skillsTitle: string;
   skills: { title: string; items: string[] }[];
+  impactTitle: string;
+  impactSubtitle: string;
   projectsTitle: string;
-  tableCols: [string, string, string, string];
+  tableCols: [string, string, string, string, string];
   timeSavingsTitle: string;
-  timeSavings: string[];
+  timeSavings: { project: string; before: string; after: string; pct: string }[];
   timeSavingsTotal: string;
+  ecosystemTitle: string;
+  ecosystemLinks: string[];
   methodologyTitle: string;
-  methodology: string[];
+  methodology: { title: string; desc: string }[];
+  ctaTitle: string;
+  ctaText: string;
   complexityMap: Record<string, string>;
+  beforeLabel: string;
+  afterLabel: string;
+  savedLabel: string;
+  projectLabel: string;
+  flagshipLabel: string;
 }
 
 function getTexts(isRu: boolean): CVTexts {
   if (isRu) {
     return {
-      summary:
-        'Портфолио из 15 проектов, объединённых стратегией автоматизации полного цикла контент-маркетинга и бизнес-процессов с помощью AI — от SEO-анализа и entity-оптимизации до генерации, верификации и публикации контента. Все инструменты разработаны solo с AI-ассистентами (Claude Code, Cursor) и решают реальные задачи в сферах медиа, маркетинга и B2B.',
+      name: 'Дмитрий Тамаров',
+      role: 'Product Manager / AI Automation Architect',
+      location: 'Москва, Россия',
+      telegram: 't.me/DTamarov',
+      portfolio: 'dmitriy-deov.github.io/portfolio',
+      summary: 'Портфолио из 15 проектов автоматизации контент-маркетинга и бизнес-процессов с помощью AI. От SEO-анализа до генерации контента, управления отзывами и корпоративных сайтов. Все проекты разработаны solo с AI-ассистентами (Claude Code, Cursor), решают реальные задачи в сферах медиа, маркетинга и B2B.',
       statLabels: ['Проектов', 'AI-агентов', 'Строк тестов', 'Экономия времени'],
       skillsTitle: 'Ключевые компетенции',
       skills: [
         {
           title: 'Product Management',
-          items: [
-            'Multi-agent AI pipeline design',
-            'Quality gates и checkpoint-системы',
-            'A/B тестирование (лендинги, лид-формы)',
-            'Knowledge base design (YAML, facts, cases)',
-            'Design systems (Atomic Design, WCAG 2.1 AA)',
-          ],
+          items: ['Multi-agent AI pipeline design', 'Quality gates и чекпоинты', 'A/B-тестирование (лендинги, лид-формы)', 'Knowledge base design (YAML, facts)', 'Design systems (Atomic Design, WCAG 2.1 AA)'],
         },
         {
           title: 'AI/LLM Engineering',
-          items: [
-            'Multi-agent оркестрация (до 14 агентов)',
-            'RAG-системы (Gemini, embeddings, vector DB)',
-            'MCP-серверы (FastMCP, 13 инструментов)',
-            'Fact verification (fuzzy dedup, source tracking)',
-            'Structured outputs (Pydantic, JSON Schema)',
-          ],
+          items: ['Мультиагентная оркестрация (до 14 агентов)', 'RAG-системы (Gemini, embeddings, vector DB)', 'MCP-серверы (FastMCP, 13 инструментов)', 'Fact verification (fuzzy dedup, source tracking)', 'Structured outputs (Pydantic, JSON Schema)'],
         },
         {
           title: 'Full-Stack Development',
-          items: [
-            'React 19, SvelteKit 2, Astro 5, TypeScript',
-            'Firebase, FastAPI, Docker Compose',
-            'Kuzu, Firestore, MySQL, SQLite',
-            'GitHub Actions CI/CD, Nginx',
-            'GraphQL, REST APIs',
-          ],
+          items: ['React 19, SvelteKit 2, Astro 5, TypeScript', 'Firebase, FastAPI, Docker Compose', 'Kuzu, Firestore, MySQL, SQLite', 'GitHub Actions CI/CD, Nginx', 'GraphQL, REST APIs'],
         },
         {
           title: 'SEO & Content',
-          items: [
-            'Entity-based SEO (Knowledge Graph)',
-            'Автоматизация SEO-исследований',
-            'Fact-checking pipelines с верификацией',
-            'Plagiarism detection (Text.ru API)',
-            'JSON-LD structured data',
-          ],
+          items: ['Entity-based SEO (Knowledge Graph)', 'Автоматизация SEO-исследований', 'Фактчекинг с верификацией источников', 'Антиплагиат (Text.ru API)', 'JSON-LD structured data'],
         },
       ],
-      projectsTitle: 'Проекты',
-      tableCols: ['Проект', 'Тип', 'Стек (топ 3)', 'Готовность'],
-      timeSavingsTitle: 'Экономия времени',
+      impactTitle: 'Ключевые проекты',
+      impactSubtitle: 'Флагманские проекты с измеримым бизнес-результатом',
+      projectsTitle: 'Полное портфолио',
+      tableCols: ['Проект', 'Тип', 'Стек (топ 3)', 'Сложность', 'Готовность'],
+      timeSavingsTitle: 'Совокупная экономия',
       timeSavings: [
-        'MediaUniversal: 14-20ч \u2192 ~30 мин (~96%)',
-        'Reviews-WB: 8-12 мин/отзыв \u2192 30-60 сек (~97%)',
-        'ESI: 20-30ч аналитики \u2192 автоматический аудит (~95%)',
-        'Pereplan Presentation: 2-4ч \u2192 30 сек (~99%)',
-        'Mamba Trading: 4-8ч/день \u2192 автоматизация (~99%)',
-        'Gemini RAG 2.0: 2-4ч/день \u2192 мгновенный ответ (~90%)',
+        { project: 'MediaUniversal', before: '14-20ч', after: '~30 мин', pct: '96%' },
+        { project: 'Reviews-WB', before: '8-12 мин/отзыв', after: '30-60 сек', pct: '97%' },
+        { project: 'ESI', before: '20-30ч аналитики', after: 'Авто-аудит', pct: '95%' },
+        { project: 'Presentation', before: '2-4ч', after: '30 сек', pct: '99%' },
+        { project: 'Gemini RAG', before: '2-4ч/день', after: 'Мгновенно', pct: '90%' },
+        { project: 'Copiwriter', before: '12-16ч', after: '2-3ч', pct: '80%' },
       ],
-      timeSavingsTotal: 'Совокупная экономия: ~60-100 человеко-часов ручной работы в неделю',
+      timeSavingsTotal: '~60-100 человеко-часов экономии в неделю',
+      ecosystemTitle: 'Связи экосистемы',
+      ecosystemLinks: [
+        'ESI \u2192 Copiwriter/MediaUniversal (SEO-данные)',
+        'Copiwriter \u2192 MediaUniversal (эволюция)',
+        'Veritas \u2192 Copiwriter/MediaUniversal (фактчек)',
+        'TextRu \u2192 Dzen (антиплагиат)',
+        'UXKit \u2192 Site3-0 (дизайн-система)',
+      ],
       methodologyTitle: 'Методология',
       methodology: [
-        'Solo + AI Assistants (Claude Code, Cursor)',
-        'Итеративная разработка (фазовый подход)',
-        'Test-driven quality (pytest, structured logging)',
-        'Documentation-first (CLAUDE.md, PRD.md, QUICKSTART.md)',
-        'CI/CD (GitHub Actions, Docker Compose)',
-        'Design Systems (Tailwind, tokens, accessibility)',
+        { title: 'Solo + AI', desc: 'Все проекты \u2014 solo с Claude Code и Cursor' },
+        { title: 'Итеративная разработка', desc: 'Фазовый подход, roadmap, checkpoints' },
+        { title: 'Test-driven quality', desc: 'pytest, structured logging, crash-safe state' },
+        { title: 'Documentation-first', desc: 'CLAUDE.md, PRD.md, QUICKSTART.md' },
+        { title: 'CI/CD', desc: 'GitHub Actions, Docker, FTP deploy' },
       ],
+      ctaTitle: 'Контакт',
+      ctaText: 'Открыт к предложениям в сфере AI-автоматизации, product management и full-stack разработки.',
       complexityMap: { High: 'Высокая', Medium: 'Средняя', Low: 'Низкая' },
+      beforeLabel: 'Было',
+      afterLabel: 'Стало',
+      savedLabel: 'Экон.',
+      projectLabel: 'Проект',
+      flagshipLabel: 'ФЛАГМАН',
     };
   }
   return {
-    summary:
-      'Portfolio of 15 projects united by a strategy of full-cycle automation of content marketing and business processes with AI — from SEO analysis and entity optimization to content generation, verification, and publication. All tools built solo with AI assistants (Claude Code, Cursor) solving real-world problems in media, marketing, and B2B.',
+    name: 'Dmitrij Tamarov',
+    role: 'Product Manager / AI Automation Architect',
+    location: 'Moscow, Russia',
+    telegram: 't.me/DTamarov',
+    portfolio: 'dmitriy-deov.github.io/portfolio',
+    summary: 'Portfolio of 15 projects automating content marketing and business processes with AI. From SEO analysis to content generation, review management, and corporate websites. All projects built solo with AI assistants (Claude Code, Cursor), solving real-world problems in media, marketing, and B2B.',
     statLabels: ['Projects', 'AI Agents', 'Test Lines', 'Time Savings'],
     skillsTitle: 'Core Competencies',
     skills: [
       {
         title: 'Product Management',
-        items: [
-          'Multi-agent AI pipeline design',
-          'Quality gates & checkpoint systems',
-          'A/B testing (landing pages, lead forms)',
-          'Knowledge base design (YAML, facts, cases)',
-          'Design systems (Atomic Design, WCAG 2.1 AA)',
-        ],
+        items: ['Multi-agent AI pipeline design', 'Quality gates & checkpoint systems', 'A/B testing (landing pages, lead forms)', 'Knowledge base design (YAML, facts)', 'Design systems (Atomic Design, WCAG 2.1 AA)'],
       },
       {
         title: 'AI/LLM Engineering',
-        items: [
-          'Multi-agent orchestration (up to 14 agents)',
-          'RAG systems (Gemini, embeddings, vector DB)',
-          'MCP servers (FastMCP, 13 tools)',
-          'Fact verification (fuzzy dedup, source tracking)',
-          'Structured outputs (Pydantic, JSON Schema)',
-        ],
+        items: ['Multi-agent orchestration (up to 14 agents)', 'RAG systems (Gemini, embeddings, vector DB)', 'MCP servers (FastMCP, 13 tools)', 'Fact verification (fuzzy dedup, source tracking)', 'Structured outputs (Pydantic, JSON Schema)'],
       },
       {
         title: 'Full-Stack Development',
-        items: [
-          'React 19, SvelteKit 2, Astro 5, TypeScript',
-          'Firebase, FastAPI, Docker Compose',
-          'Kuzu, Firestore, MySQL, SQLite',
-          'GitHub Actions CI/CD, Nginx',
-          'GraphQL, REST APIs',
-        ],
+        items: ['React 19, SvelteKit 2, Astro 5, TypeScript', 'Firebase, FastAPI, Docker Compose', 'Kuzu, Firestore, MySQL, SQLite', 'GitHub Actions CI/CD, Nginx', 'GraphQL, REST APIs'],
       },
       {
         title: 'SEO & Content',
-        items: [
-          'Entity-based SEO (Knowledge Graph)',
-          'Automated SEO research & analysis',
-          'Fact-checking pipelines with verification',
-          'Plagiarism detection (Text.ru API)',
-          'JSON-LD structured data',
-        ],
+        items: ['Entity-based SEO (Knowledge Graph)', 'Automated SEO research & analysis', 'Fact-checking with source verification', 'Plagiarism detection (Text.ru API)', 'JSON-LD structured data'],
       },
     ],
-    projectsTitle: 'Projects',
-    tableCols: ['Project', 'Type', 'Stack (top 3)', 'Sales-Ready'],
-    timeSavingsTitle: 'Time Savings',
+    impactTitle: 'Key Projects',
+    impactSubtitle: 'Flagship projects with measurable business impact',
+    projectsTitle: 'Full Portfolio',
+    tableCols: ['Project', 'Type', 'Stack (top 3)', 'Complexity', 'Sales-Ready'],
+    timeSavingsTitle: 'Total Impact',
     timeSavings: [
-      'MediaUniversal: 14-20h \u2192 ~30 min (~96%)',
-      'Reviews-WB: 8-12 min/review \u2192 30-60 sec (~97%)',
-      'ESI: 20-30h analytics \u2192 automated audit (~95%)',
-      'Pereplan Presentation: 2-4h \u2192 30 sec (~99%)',
-      'Mamba Trading: 4-8h/day \u2192 full automation (~99%)',
-      'Gemini RAG 2.0: 2-4h/day \u2192 instant AI answer (~90%)',
+      { project: 'MediaUniversal', before: '14-20h', after: '~30 min', pct: '96%' },
+      { project: 'Reviews-WB', before: '8-12 min/review', after: '30-60 sec', pct: '97%' },
+      { project: 'ESI', before: '20-30h analytics', after: 'Auto audit', pct: '95%' },
+      { project: 'Presentation', before: '2-4h', after: '30 sec', pct: '99%' },
+      { project: 'Gemini RAG', before: '2-4h/day', after: 'Instant', pct: '90%' },
+      { project: 'Copiwriter', before: '12-16h', after: '2-3h', pct: '80%' },
     ],
-    timeSavingsTotal: 'Total savings: ~60-100 person-hours of manual work per week',
+    timeSavingsTotal: '~60-100 person-hours saved per week',
+    ecosystemTitle: 'Ecosystem Connections',
+    ecosystemLinks: [
+      'ESI \u2192 Copiwriter/MediaUniversal (SEO data)',
+      'Copiwriter \u2192 MediaUniversal (evolution)',
+      'Veritas \u2192 Copiwriter/MediaUniversal (fact-check)',
+      'TextRu \u2192 Dzen (plagiarism)',
+      'UXKit \u2192 Site3-0 (design system)',
+    ],
     methodologyTitle: 'Methodology',
     methodology: [
-      'Solo + AI Assistants (Claude Code, Cursor)',
-      'Iterative delivery (phased development)',
-      'Test-driven quality (pytest, structured logging)',
-      'Documentation-first (CLAUDE.md, PRD.md, QUICKSTART.md)',
-      'CI/CD (GitHub Actions, Docker Compose)',
-      'Design Systems (Tailwind, tokens, accessibility)',
+      { title: 'Solo + AI', desc: 'All projects built solo with Claude Code and Cursor' },
+      { title: 'Iterative Delivery', desc: 'Phased development, roadmaps, checkpoints' },
+      { title: 'Test-driven quality', desc: 'pytest, structured logging, crash-safe state' },
+      { title: 'Documentation-first', desc: 'CLAUDE.md, PRD.md, QUICKSTART.md' },
+      { title: 'CI/CD', desc: 'GitHub Actions, Docker, FTP deploy' },
     ],
+    ctaTitle: 'Contact',
+    ctaText: 'Open to opportunities in AI automation, product management, and full-stack development.',
     complexityMap: { High: 'High', Medium: 'Medium', Low: 'Low' },
+    beforeLabel: 'Before',
+    afterLabel: 'After',
+    savedLabel: 'Saved',
+    projectLabel: 'Project',
+    flagshipLabel: 'FLAGSHIP',
   };
 }
 
-/* All HTML content below is developer-controlled static text — no user input, no XSS risk */
+/* ── PAGE 1: Profile + Competencies ── */
 
 function buildPage1(isRu: boolean): HTMLDivElement {
   const t = getTexts(isRu);
   const page = makePage();
 
-  const statsHtml = [
+  const stats = [
     { value: '15', label: t.statLabels[0], accent: true },
     { value: '25+', label: t.statLabels[1], accent: false },
-    { value: '1592', label: t.statLabels[2], accent: false },
+    { value: '1 592', label: t.statLabels[2], accent: false },
     { value: '~96%', label: t.statLabels[3], accent: true },
-  ]
-    .map(
-      s => `<div style="flex:1;padding:16px;background:#f8f9fa;border-radius:6px;border:1px solid #eee;">
-        <div style="font-size:26px;font-weight:900;color:${s.accent ? ACCENT : '#111'};">${s.value}</div>
-        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:4px;">${s.label}</div>
-      </div>`,
-    )
-    .join('');
+  ];
 
-  const skillsHtml = t.skills.map(s => skillBlock(s.title, s.items)).join('');
+  const statsHtml = stats.map(s =>
+    `<div style="flex:1;text-align:center;padding:14px 8px;">
+      <div style="font-size:28px;font-weight:900;color:${s.accent ? ACCENT : '#111'};letter-spacing:-0.5px;">${s.value}</div>
+      <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#999;margin-top:4px;">${s.label}</div>
+    </div>`
+  ).join('');
 
-  const name = isRu ? 'Дмитрий Тамаров' : 'Dmitrij Tamarov';
-  const location = isRu ? 'Москва, Россия' : 'Moscow, Russia';
+  const skillsHtml = t.skills.map(s =>
+    `<div style="padding:12px 0;">
+      <div style="font-size:10px;font-weight:800;color:${ACCENT};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">${s.title}</div>
+      <div style="font-size:9px;line-height:1.7;color:#555;">${s.items.map(i => `\u2022 ${i}`).join('<br>')}</div>
+    </div>`
+  ).join('');
 
-  // Using textContent where possible; innerHTML only for trusted static markup
+  // All content is static developer-controlled text (no user input)
   const content = document.createElement('div');
-
-  // Blue bar
-  const bar = document.createElement('div');
-  bar.style.cssText = `height:4px;background:${ACCENT};margin-bottom:32px;`;
-  content.appendChild(bar);
-
-  // Name
-  const nameEl = document.createElement('div');
-  nameEl.style.cssText = 'font-size:32px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;line-height:1.1;margin-bottom:6px;';
-  nameEl.textContent = name;
-  content.appendChild(nameEl);
-
-  // Role
-  const roleEl = document.createElement('div');
-  roleEl.style.cssText = 'font-size:15px;color:#555;font-weight:500;margin-bottom:12px;';
-  roleEl.textContent = 'Product Manager / AI Automation Architect';
-  content.appendChild(roleEl);
-
-  // Contact
-  const contactEl = document.createElement('div');
-  contactEl.style.cssText = 'font-size:11px;color:#888;margin-bottom:28px;display:flex;gap:16px;';
-  const loc = document.createElement('span');
-  loc.textContent = location;
-  const tg = document.createElement('span');
-  tg.textContent = 'Telegram: @DTamarov';
-  contactEl.appendChild(loc);
-  contactEl.appendChild(tg);
-  content.appendChild(contactEl);
-
-  // Rest uses innerHTML for complex layout — all content is static/trusted
-  const rest = document.createElement('div');
-  rest.innerHTML = [
-    divider(20),
-    `<div style="font-size:12px;line-height:1.7;color:#333;margin-bottom:28px;">${t.summary}</div>`,
-    `<div style="display:flex;gap:12px;margin-bottom:28px;">${statsHtml}</div>`,
-    divider(20),
-    heading(t.skillsTitle),
-    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;">${skillsHtml}</div>`,
+  content.innerHTML = [
+    `<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+      <div>
+        <div style="font-size:32px;font-weight:900;letter-spacing:-1px;text-transform:uppercase;line-height:1;color:#111;">${t.name}</div>
+        <div style="font-size:13px;color:#555;font-weight:500;margin-top:6px;">${t.role}</div>
+      </div>
+      <div style="text-align:right;font-size:10px;color:#888;line-height:1.8;">
+        <div>\u2709 ${t.telegram}</div>
+        <div>\u25C6 ${t.location}</div>
+        <div>\u2197 ${t.portfolio}</div>
+      </div>
+    </div>`,
+    `<div style="height:3px;background:${ACCENT};margin-bottom:24px;"></div>`,
+    `<div style="font-size:11px;line-height:1.75;color:#444;margin-bottom:24px;padding:16px 20px;background:#f8f9fb;border-left:3px solid ${ACCENT};border-radius:0 4px 4px 0;">${t.summary}</div>`,
+    `<div style="display:flex;margin-bottom:24px;border:1px solid #eee;border-radius:6px;overflow:hidden;">${statsHtml}</div>`,
+    thinDivider(20),
+    sectionTitle('01'),
+    sectionHeading(t.skillsTitle),
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 28px;">${skillsHtml}</div>`,
+    pageFooter(t.name, 1),
   ].join('');
-  content.appendChild(rest);
 
   page.appendChild(content);
   return page;
 }
+
+/* ── PAGE 2: Key Projects Impact ── */
 
 function buildPage2(isRu: boolean, projects: Project[]): HTMLDivElement {
   const t = getTexts(isRu);
   const page = makePage();
 
-  const tableRows = projects
-    .map(p => {
-      const flag = p.flagship ? '\u2605 ' : '';
-      const stack = p.techStack.slice(0, 3).join(', ');
-      const cx = t.complexityMap[p.complexity] || p.complexity;
-      const bold = p.flagship ? '700' : '400';
-      return `<tr>
-        <td style="padding:5px 8px;border-bottom:1px solid #f0f0f0;font-size:10px;font-weight:${bold};">${flag}${p.name}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f0f0f0;font-size:10px;color:#555;">${p.type}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f0f0f0;font-size:9px;color:#666;">${stack}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f0f0f0;font-size:10px;color:#555;">${cx}</td>
-        <td style="padding:5px 8px;border-bottom:1px solid #f0f0f0;font-size:10px;font-weight:600;color:${ACCENT};">${p.salesReady}/10</td>
-      </tr>`;
+  const topProjects = [...projects]
+    .sort((a, b) => {
+      if (b.salesReady !== a.salesReady) return b.salesReady - a.salesReady;
+      const cxOrder: Record<string, number> = { High: 3, Medium: 2, Low: 1 };
+      return cxOrder[b.complexity] - cxOrder[a.complexity];
     })
-    .join('');
+    .slice(0, 6);
 
+  const projectCards = topProjects.map(p => {
+    const stack = p.techStack.slice(0, 3).join(', ');
+    const flagshipBadge = p.flagship
+      ? `<span style="display:inline-block;background:${ACCENT};color:#fff;font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:2px 6px;border-radius:2px;margin-left:8px;">\u2605 ${t.flagshipLabel}</span>`
+      : '';
+
+    const timeStr = p.timeSavings
+      ? `<div style="font-size:9px;color:${ACCENT};font-weight:700;margin-top:6px;">\u23F1 ${p.timeSavings}</div>`
+      : '';
+
+    const bv = p.businessValue.length > 160 ? p.businessValue.slice(0, 157) + '...' : p.businessValue;
+
+    return `<div style="padding:12px 14px;background:#fafbfc;border:1px solid #f0f0f0;border-radius:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-size:12px;font-weight:800;color:#111;">${p.name}${flagshipBadge}</div>
+        <div style="font-size:11px;font-weight:800;color:${ACCENT};">${p.salesReady}/10</div>
+      </div>
+      <div style="font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">${p.subtitle}</div>
+      <div style="font-size:9px;line-height:1.6;color:#555;margin-bottom:6px;">${bv}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:8px;color:#888;font-family:monospace;">${stack}</div>
+        <div style="font-size:8px;font-weight:700;color:#aaa;text-transform:uppercase;">${t.complexityMap[p.complexity] || p.complexity}</div>
+      </div>
+      ${timeStr}
+    </div>`;
+  }).join('');
+
+  const savingsRows = t.timeSavings.map(s =>
+    `<tr>
+      <td style="padding:4px 8px;font-size:9px;font-weight:600;color:#333;border-bottom:1px solid #f5f5f5;">${s.project}</td>
+      <td style="padding:4px 8px;font-size:9px;color:#888;border-bottom:1px solid #f5f5f5;">${s.before}</td>
+      <td style="padding:4px 8px;font-size:9px;color:#888;border-bottom:1px solid #f5f5f5;">\u2192</td>
+      <td style="padding:4px 8px;font-size:9px;font-weight:600;color:${ACCENT};border-bottom:1px solid #f5f5f5;">${s.after}</td>
+      <td style="padding:4px 8px;font-size:10px;font-weight:800;color:${ACCENT};border-bottom:1px solid #f5f5f5;text-align:right;">${s.pct}</td>
+    </tr>`
+  ).join('');
+
+  // All content is static developer-controlled text (no user input)
   const content = document.createElement('div');
-
-  // Blue bar
-  const bar = document.createElement('div');
-  bar.style.cssText = `height:4px;background:${ACCENT};margin-bottom:28px;`;
-  content.appendChild(bar);
-
-  // Table + rest — all content is static/trusted developer data
-  const rest = document.createElement('div');
-  rest.innerHTML = [
-    heading(t.projectsTitle),
-    `<table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-      <thead><tr style="background:#f8f9fa;">
-        <th style="padding:8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:2px solid #e5e7eb;">${t.tableCols[0]}</th>
-        <th style="padding:8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:2px solid #e5e7eb;">${t.tableCols[1]}</th>
-        <th style="padding:8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:2px solid #e5e7eb;">${t.tableCols[2]}</th>
-        <th style="padding:8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:2px solid #e5e7eb;">${isRu ? 'Сложность' : 'Complexity'}</th>
-        <th style="padding:8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:2px solid #e5e7eb;">${t.tableCols[3]}</th>
-      </tr></thead>
-      <tbody>${tableRows}</tbody>
+  content.innerHTML = [
+    accentBar(),
+    sectionTitle('02'),
+    sectionHeading(t.impactTitle),
+    `<div style="font-size:10px;color:#888;margin-bottom:16px;margin-top:-10px;">${t.impactSubtitle}</div>`,
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;">${projectCards}</div>`,
+    thinDivider(20),
+    sectionTitle(''),
+    sectionHeading(t.timeSavingsTitle),
+    `<table style="width:100%;border-collapse:collapse;margin-bottom:8px;">
+      <thead>
+        <tr>
+          <th style="padding:6px 8px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;border-bottom:2px solid #eee;">${t.projectLabel}</th>
+          <th style="padding:6px 8px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;border-bottom:2px solid #eee;">${t.beforeLabel}</th>
+          <th style="padding:6px 8px;text-align:center;font-size:8px;color:#aaa;border-bottom:2px solid #eee;"></th>
+          <th style="padding:6px 8px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;border-bottom:2px solid #eee;">${t.afterLabel}</th>
+          <th style="padding:6px 8px;text-align:right;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#aaa;border-bottom:2px solid #eee;">${t.savedLabel}</th>
+        </tr>
+      </thead>
+      <tbody>${savingsRows}</tbody>
     </table>`,
-    divider(20),
-    heading(t.timeSavingsTitle),
-    `<div style="font-size:10px;line-height:1.8;color:#444;margin-bottom:8px;">${t.timeSavings.map(s => '&bull; ' + s).join('<br>')}</div>`,
-    `<div style="font-size:11px;font-weight:700;color:${ACCENT};margin-bottom:24px;">${t.timeSavingsTotal}</div>`,
-    divider(20),
-    heading(t.methodologyTitle),
-    `<div style="font-size:10px;line-height:1.8;color:#444;">${t.methodology.map(m => '&bull; ' + m).join('<br>')}</div>`,
+    `<div style="font-size:11px;font-weight:800;color:${ACCENT};padding:10px 14px;background:#f0f4ff;border-radius:4px;text-align:center;">${t.timeSavingsTotal}</div>`,
+    pageFooter(t.name, 2),
   ].join('');
-  content.appendChild(rest);
-
-  // Footer
-  const footer = document.createElement('div');
-  footer.style.cssText = `position:absolute;bottom:${P}px;right:${P}px;font-size:9px;color:#ccc;`;
-  footer.textContent = `\u00A9 2026 ${isRu ? 'Дмитрий Тамаров' : 'Dmitrij Tamarov'}`;
-  page.style.position = 'relative';
 
   page.appendChild(content);
-  page.appendChild(footer);
   return page;
 }
+
+/* ── PAGE 3: Full Portfolio + Methodology + Contact ── */
+
+function buildPage3(isRu: boolean, projects: Project[]): HTMLDivElement {
+  const t = getTexts(isRu);
+  const page = makePage();
+
+  const tableRows = projects.map(p => {
+    const flag = p.flagship ? '\u2605 ' : '';
+    const stack = p.techStack.slice(0, 3).join(', ');
+    const cx = t.complexityMap[p.complexity] || p.complexity;
+    const bold = p.flagship ? '700' : '400';
+    return `<tr>
+      <td style="padding:4px 6px;border-bottom:1px solid #f5f5f5;font-size:9px;font-weight:${bold};color:#222;white-space:nowrap;">${flag}${p.name}</td>
+      <td style="padding:4px 6px;border-bottom:1px solid #f5f5f5;font-size:8px;color:#666;">${p.type}</td>
+      <td style="padding:4px 6px;border-bottom:1px solid #f5f5f5;font-size:8px;color:#888;font-family:monospace;">${stack}</td>
+      <td style="padding:4px 6px;border-bottom:1px solid #f5f5f5;font-size:8px;color:#666;">${cx}</td>
+      <td style="padding:4px 6px;border-bottom:1px solid #f5f5f5;font-size:9px;font-weight:700;color:${ACCENT};text-align:center;">${p.salesReady}/10</td>
+    </tr>`;
+  }).join('');
+
+  const ecosystemHtml = t.ecosystemLinks.map(l =>
+    `<div style="font-size:8px;color:#666;line-height:1.6;">\u2022 ${l}</div>`
+  ).join('');
+
+  const methodHtml = t.methodology.map(m =>
+    `<div style="margin-bottom:6px;">
+      <span style="font-size:9px;font-weight:700;color:#333;">${m.title}</span>
+      <span style="font-size:9px;color:#888;"> \u2014 ${m.desc}</span>
+    </div>`
+  ).join('');
+
+  // All content is static developer-controlled text (no user input)
+  const content = document.createElement('div');
+  content.innerHTML = [
+    accentBar(),
+    sectionTitle('03'),
+    sectionHeading(t.projectsTitle),
+    `<table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <thead>
+        <tr style="background:#f8f9fa;">
+          <th style="padding:6px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #e5e7eb;">${t.tableCols[0]}</th>
+          <th style="padding:6px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #e5e7eb;">${t.tableCols[1]}</th>
+          <th style="padding:6px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #e5e7eb;">${t.tableCols[2]}</th>
+          <th style="padding:6px;text-align:left;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #e5e7eb;">${t.tableCols[3]}</th>
+          <th style="padding:6px;text-align:center;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #e5e7eb;">${t.tableCols[4]}</th>
+        </tr>
+      </thead>
+      <tbody>${tableRows}</tbody>
+    </table>`,
+    thinDivider(16),
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px;">
+      <div>
+        ${sectionTitle('')}
+        ${sectionHeading(t.ecosystemTitle)}
+        ${ecosystemHtml}
+      </div>
+      <div>
+        ${sectionTitle('')}
+        ${sectionHeading(t.methodologyTitle)}
+        ${methodHtml}
+      </div>
+    </div>`,
+    thinDivider(16),
+    `<div style="background:${ACCENT};color:#fff;padding:20px 24px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:-0.3px;margin-bottom:4px;">${t.ctaTitle}</div>
+        <div style="font-size:10px;font-weight:400;opacity:0.85;">${t.ctaText}</div>
+      </div>
+      <div style="text-align:right;font-size:10px;font-weight:600;line-height:1.8;">
+        <div>Telegram: @DTamarov</div>
+        <div>${t.portfolio}</div>
+      </div>
+    </div>`,
+    pageFooter(t.name, 3),
+  ].join('');
+
+  page.appendChild(content);
+  return page;
+}
+
+/* ── Export function ── */
 
 export async function generateCV(
   lang: 'ru' | 'en',
@@ -336,15 +447,18 @@ export async function generateCV(
 
   const page1 = buildPage1(isRu);
   const page2 = buildPage2(isRu, projects);
+  const page3 = buildPage3(isRu, projects);
   container.appendChild(page1);
   container.appendChild(page2);
+  container.appendChild(page3);
 
-  // Allow browser to render
-  await new Promise(r => setTimeout(r, 100));
+  await new Promise(r => setTimeout(r, 150));
 
-  const [canvas1, canvas2] = await Promise.all([
-    html2canvas(page1, { scale: 2, backgroundColor: '#ffffff', logging: false }),
-    html2canvas(page2, { scale: 2, backgroundColor: '#ffffff', logging: false }),
+  const canvasOptions = { scale: 2, backgroundColor: '#ffffff', logging: false };
+  const [canvas1, canvas2, canvas3] = await Promise.all([
+    html2canvas(page1, canvasOptions),
+    html2canvas(page2, canvasOptions),
+    html2canvas(page3, canvasOptions),
   ]);
 
   const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -354,6 +468,8 @@ export async function generateCV(
   pdf.addImage(canvas1.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pw, ph);
   pdf.addPage();
   pdf.addImage(canvas2.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pw, ph);
+  pdf.addPage();
+  pdf.addImage(canvas3.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pw, ph);
 
   const blob = pdf.output('blob');
   const url = URL.createObjectURL(blob);

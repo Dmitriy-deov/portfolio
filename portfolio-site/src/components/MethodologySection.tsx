@@ -1,12 +1,13 @@
+import { Brain, RefreshCw, FlaskConical, BookOpen, Rocket, Palette } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const items = [
-  { key: 'solo', icon: 'psychology' },
-  { key: 'iterative', icon: 'autorenew' },
-  { key: 'testing', icon: 'science' },
-  { key: 'docs', icon: 'menu_book' },
-  { key: 'cicd', icon: 'rocket_launch' },
-  { key: 'design', icon: 'design_services' },
+  { key: 'solo', icon: Brain },
+  { key: 'iterative', icon: RefreshCw },
+  { key: 'testing', icon: FlaskConical },
+  { key: 'docs', icon: BookOpen },
+  { key: 'cicd', icon: Rocket },
+  { key: 'design', icon: Palette },
 ] as const;
 
 export default function MethodologySection() {
@@ -27,29 +28,30 @@ export default function MethodologySection() {
 
         {/* Methodology cards — right columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3">
-          {items.map((item, idx) => (
-            <div
-              key={item.key}
-              className={[
-                'group p-8 md:p-10 transition-colors hover:bg-bg-card-hover',
-                idx < items.length - 1 ? 'border-b border-border sm:border-b-0' : '',
-                '',
-                '',
-                idx >= 3 ? 'lg:border-t lg:border-border' : '',
-                idx >= 2 ? 'sm:border-t sm:border-border lg:border-t-0' : '',
-              ].join(' ')}
-            >
-              <span className="material-symbols-outlined mb-4 block text-4xl text-accent">
-                {item.icon}
-              </span>
-              <h3 className="mb-2 text-lg font-bold uppercase text-text-primary">
-                {t(`methodology.${item.key}.title`)}
-              </h3>
-              <p className="text-sm font-medium leading-relaxed text-text-secondary">
-                {t(`methodology.${item.key}.desc`)}
-              </p>
-            </div>
-          ))}
+          {items.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.key}
+                className={[
+                  'group p-8 md:p-10 transition-colors hover:bg-bg-card-hover',
+                  idx < items.length - 1 ? 'border-b border-border sm:border-b-0' : '',
+                  '',
+                  '',
+                  idx >= 3 ? 'lg:border-t lg:border-border' : '',
+                  idx >= 2 ? 'sm:border-t sm:border-border lg:border-t-0' : '',
+                ].join(' ')}
+              >
+                <Icon size={36} className="mb-4 block text-accent" />
+                <h3 className="mb-2 text-lg font-bold uppercase text-text-primary">
+                  {t(`methodology.${item.key}.title`)}
+                </h3>
+                <p className="text-sm font-medium leading-relaxed text-text-secondary">
+                  {t(`methodology.${item.key}.desc`)}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
