@@ -13,8 +13,8 @@ export default function CVDownloadModal({ isOpen, onClose }: Props) {
 
   const handleMD = () => {
     const link = document.createElement('a');
-    link.href = `${import.meta.env.BASE_URL}portfolio-prd.md`;
-    link.download = 'portfolio-prd.md';
+    link.href = `${import.meta.env.BASE_URL}resume.md`;
+    link.download = 'resume.md';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
