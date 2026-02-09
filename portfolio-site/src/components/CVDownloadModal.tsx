@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { FileText, Code, X, Loader2 } from 'lucide-react';
+import { Code, X } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { useProjects } from '../data/useProjectData';
-import { generateCV } from '../utils/generateCV';
 
 interface Props {
   isOpen: boolean;
@@ -10,20 +7,9 @@ interface Props {
 }
 
 export default function CVDownloadModal({ isOpen, onClose }: Props) {
-  const { lang, t } = useLanguage();
-  const projects = useProjects();
-  const [generating, setGenerating] = useState(false);
+  const { t } = useLanguage();
 
   if (!isOpen) return null;
-
-  const handlePDF = async () => {
-    setGenerating(true);
-    try {
-      await generateCV(lang as 'ru' | 'en', projects);
-    } finally {
-      setGenerating(false);
-    }
-  };
 
   const handleMD = () => {
     const link = document.createElement('a');
@@ -58,25 +44,6 @@ export default function CVDownloadModal({ isOpen, onClose }: Props) {
 
         {/* Options */}
         <div className="flex flex-col gap-3">
-          {/* PDF */}
-          <button
-            onClick={handlePDF}
-            disabled={generating}
-            className="group flex items-center gap-4 rounded-lg border border-border p-4 text-left transition-all hover:border-accent hover:bg-bg-secondary disabled:opacity-60"
-          >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-              {generating ? <Loader2 size={20} className="animate-spin" /> : <FileText size={20} />}
-            </div>
-            <div>
-              <div className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
-                {t('cv.modal.pdf')}
-              </div>
-              <div className="text-xs text-text-muted mt-0.5">
-                {t('cv.modal.pdfDesc')}
-              </div>
-            </div>
-          </button>
-
           {/* Markdown */}
           <button
             onClick={handleMD}
