@@ -2,7 +2,7 @@
 
 **Product Manager / AI Automation Architect**
 
-Москва, Россия | [Telegram: @DTamarov](https://t.me/DTamarov) | [GitHub: dmitriy-deov](https://github.com/dmitriy-deov) | [Портфолио](https://dmitriy-deov.github.io/portfolio/)
+[Telegram: @DTamarov](https://t.me/DTamarov) | [Портфолио](https://dmitriy-deov.github.io/portfolio/)
 
 ---
 
@@ -152,7 +152,6 @@ Production-сайт компании «АПМ-1» на soglasovanie.su. 50+ ст
 ## Контакт
 
 - **Telegram:** [@DTamarov](https://t.me/DTamarov)
-- **GitHub:** [dmitriy-deov](https://github.com/dmitriy-deov)
 - **Портфолио:** [dmitriy-deov.github.io/portfolio](https://dmitriy-deov.github.io/portfolio/)
 
 ---

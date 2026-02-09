@@ -1,4 +1,4 @@
-import { Code, X } from 'lucide-react';
+import { FileText, Code, X } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
@@ -44,6 +44,26 @@ export default function CVDownloadModal({ isOpen, onClose }: Props) {
 
         {/* Options */}
         <div className="flex flex-col gap-3">
+          {/* PDF — Google Docs link */}
+          <a
+            href="https://docs.google.com/document/d/101rwPPhYRPqmB9MehPAD1lPb4z0Xwqz7CesKxSQzDQc/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-4 rounded-lg border border-border p-4 text-left transition-all hover:border-accent hover:bg-bg-secondary"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              <FileText size={20} />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
+                {t('cv.modal.pdf')}
+              </div>
+              <div className="text-xs text-text-muted mt-0.5">
+                {t('cv.modal.pdfDesc')}
+              </div>
+            </div>
+          </a>
+
           {/* Markdown */}
           <button
             onClick={handleMD}
