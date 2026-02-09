@@ -11,9 +11,9 @@
   --color-text-primary: #000000;
   --color-text-secondary: #6B7280;
   --color-text-muted: #9CA3AF;
-  --color-accent: #4A8AE6;
-  --color-accent-hover: #3D73C4;
-  --color-accent-dim: #2E5A9E;
+  --color-accent: #0055FF;
+  --color-accent-hover: #0044CC;
+  --color-accent-dim: #0033AA;
   --color-border: #000000;
   --color-border-light: #D1D5DB;
   --color-border-hover: #3a3a52;
@@ -76,7 +76,7 @@ body {
 
 /* Selection */
 ::selection {
-  background-color: #4A8AE6;
+  background-color: var(--color-accent);
   color: white;
 }
 

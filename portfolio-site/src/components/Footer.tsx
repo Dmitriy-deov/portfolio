@@ -34,7 +34,7 @@ export default function Footer() {
           {/* Logo + Copyright */}
           <div className="lg:col-span-3">
             <div className="mb-6 flex items-center gap-3">
-              <img src="/logo.svg" alt="DT" className="h-7 w-auto" />
+              <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="DT" className="h-7 w-auto" />
               <span className="text-lg font-black uppercase tracking-tight text-text-primary">
                 DT
               </span>

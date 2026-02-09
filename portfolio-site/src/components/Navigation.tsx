@@ -52,7 +52,7 @@ export default function Navigation() {
             onClick={handleLogoClick}
             className="flex items-center gap-2 text-text-primary hover:text-accent transition-colors"
           >
-            <img src="/logo.svg" alt="DT" className="h-6 w-auto" />
+            <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="DT" className="h-6 w-auto" />
             <span className="text-xl font-black uppercase tracking-tight">DT</span>
           </a>
         </div>
@@ -97,7 +97,7 @@ export default function Navigation() {
           onClick={handleLogoClick}
           className="flex items-center gap-2 text-text-primary hover:text-accent transition-colors"
         >
-          <img src="/logo.svg" alt="DT" className="h-5 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="DT" className="h-5 w-auto" />
           <span className="text-xl font-black uppercase tracking-tight">DT</span>
         </a>
 
