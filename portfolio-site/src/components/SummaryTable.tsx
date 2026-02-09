@@ -366,7 +366,7 @@ export default function SummaryTable() {
 
       {/* ── Desktop project rows ── */}
       <div className="hidden lg:block">
-        {sorted.map((p, i) => {
+        {sorted.map((p, _i) => {
           const isExpanded = expandedIds.has(p.id);
 
           return (
@@ -444,7 +444,7 @@ export default function SummaryTable() {
 
       {/* ── Mobile card layout ── */}
       <div className="flex flex-col lg:hidden">
-        {sorted.map((p, i) => {
+        {sorted.map((p, _i) => {
           const isExpanded = expandedIds.has(p.id);
 
           return (
